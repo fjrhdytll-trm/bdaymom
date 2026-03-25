@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Surprise Ulang Tahun Emak ❤️</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+<style>
+html,body{margin:0;padding:0;width:100%;height:100%;overflow-x:hidden;font-family:'Plus Jakarta Sans',sans-serif;background:#0f172a;color:#f8fafc;}
+.font-serif{font-family:'Playfair Display',serif;}
+.section{position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;width:100%;min-height:100vh;padding:1rem;text-align:center;}
+.glass{background:rgba(255,255,255,.05);backdrop-filter:blur(18px) saturate(140%);border:1px solid rgba(255,255,255,.12);box-shadow:0 12px 40px rgba(0,0,0,.5), inset 0 0 15px rgba(255,255,255,.02);border-radius:2rem;transition:transform .4s ease,box-shadow .4s ease;}
+.glass:hover{transform:translateY(-3px) scale(1.01);box-shadow:0 15px 50px rgba(0,0,0,.7), inset 0 0 20px rgba(255,255,255,.04);}
+.animate-float{animation:float 6s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-20px);}}
+.gradient-text{background:linear-gradient(120deg,#fde047,#fb923c,#facc15);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+input{width:100%;max-width:250px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,.12);border-radius:1rem;padding:0.8rem 0;text-align:center;font-size:2rem;letter-spacing:1em;color:#fff;transition:all .3s ease;}
+input:focus{border-color:#facc15;box-shadow:0 0 12px rgba(250,204,21,.5), inset 0 0 8px rgba(255,255,255,.08);outline:none;}
+button{position:relative;overflow:hidden;border-radius:1rem;font-weight:700;cursor:pointer;transition:all .3s ease;}
+button:hover{filter:brightness(1.1);}button:active{transform:scale(0.96);}
+@keyframes shake{0%,100%{transform:translateX(0);}20%,60%{transform:translateX(-8px);}40%,80%{transform:translateX(8px);}}
+#containerKue{cursor:pointer;transition:transform .3s ease;width:80%;max-width:300px;}
+#containerKue:hover{transform:scale(1.05) rotate(-1deg);}
+#api{width:1.2rem;height:2.5rem;background:#f97316;border-radius:50%;filter:blur(3px);position:absolute;top:-2rem;left:50%;transform:translateX(-50%);animation:flame .2s infinite alternate;box-shadow:0 0 12px #f97316;}
+@keyframes flame{from{transform:translateX(-50%) scale(1);opacity:.9;}to{transform:translateX(-50%) scale(1.15);opacity:1;}}
+.playlist-wrapper{border-radius:2rem;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.12);}
+.fade-in{opacity:0;animation:fadeIn 1s forwards;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.sparkle{position:absolute;width:4px;height:4px;background:white;border-radius:50%;opacity:0.6;animation:floatSparkle 4s infinite;}
+@keyframes floatSparkle{0%{transform:translateY(0) translateX(0);opacity:0.6;}50%{transform:translateY(-40px) translateX(15px);opacity:0.2;}100%{transform:translateY(0) translateX(0);opacity:0.6;}}
+@media(max-width:600px){.text-3xl{font-size:1.75rem}.text-4xl{font-size:2rem}.text-6xl{font-size:3rem}.input-small{font-size:1.8rem}}
+</style>
+</head>
+<body>
+
+<div id="sparkles"></div>
+
+<!-- HALAMAN SANDI -->
+<section id="halaman-sandi" class="section">
+<div class="animate-float mb-6 text-5xl fade-in">🔐</div>
+<div class="glass p-8 rounded-3xl max-w-sm w-full fade-in">
+<h1 class="font-serif text-3xl gradient-text mb-2">Halo, Emak Sayang</h1>
+<p class="text-slate-400 text-sm mb-6 font-light">Masukkan 6 digit tanggal lahirmu untuk melihat kejutan di dalam.</p>
+<input type="password" id="inputSandi" placeholder="••••••" maxlength="6">
+<button onclick="cekSandi()" class="w-full bg-gradient-to-r from-yellow-500 to-orange-600 text-white py-3 rounded-xl font-bold mt-6">Buka Pintu Kejutan ➔</button>
+<p id="errorMsg" class="text-red-400 text-xs mt-4 opacity-0 transition-opacity italic">Kode salah, coba diingat lagi ya, Mak! 😜</p>
+</div>
+</section>
+
+<!-- HALAMAN KUE -->
+<section id="halaman-kue" class="section hidden">
+<h2 class="font-serif text-3xl mb-8 gradient-text italic fade-in">"Tiup Lilinnya, Mak!"</h2>
+<div id="containerKue" onclick="tiupLilin()" class="relative">
+<div id="api"></div>
+<div class="w-4 h-16 bg-gradient-to-b from-white to-slate-300 mx-auto rounded-t-full shadow-inner"></div>
+<div class="w-56 h-32 bg-gradient-to-b from-pink-400 to-pink-600 rounded-2xl shadow-2xl flex items-center justify-center border-b-8 border-pink-800 relative overflow-hidden">
+<div class="absolute inset-0 bg-white/10 opacity-20 transform -skew-x-12"></div>
+<span class="text-6xl group-hover:scale-110 transition-transform duration-300">🎂</span>
+</div>
+</div>
+<p class="mt-10 text-slate-500 text-sm tracking-widest uppercase font-light fade-in">Sentuh kue untuk meniup</p>
+</section>
+
+<!-- HALAMAN UCAPAN -->
+<section id="halaman-ucapan" class="section hidden">
+<div class="glass max-w-2xl w-full p-10 rounded-[2rem] text-center relative overflow-hidden fade-in">
+<h2 class="text-4xl font-serif mb-6 gradient-text">Barakallah Fii Umrik, Mak! ✨</h2>
+<div class="space-y-5 text-slate-300 leading-relaxed text-lg font-light fade-in">
+<p>Selamat ulang tahun ya, Mak 🤍</p>
+<p>Hari ini bukan cuma tentang bertambahnya umur, tapi tentang betapa berharganya semua waktu yang udah Mak lewatin buat keluarga ini.</p>
+<p>Terima kasih karena selalu ada, selalu sabar, selalu kuat, bahkan di saat keadaan lagi berat banget. Mak itu rumah, tempat pulang paling nyaman yang gak pernah berubah.</p>
+<p>Semoga Allah selalu kasih kesehatan, umur panjang yang penuh berkah, dan kebahagiaan yang gak ada habisnya buat Mak. Semoga semua doa Mak juga satu per satu dikabulin 🤲</p>
+<p>Dan semoga hari ini jadi penuh senyum, pelukan hangat, dan rasa cinta yang melimpah ❤️</p>
+</div>
+<button onclick="nextPlaylist()" class="mt-8 w-full bg-gradient-to-r from-green-400 to-blue-500 text-white py-3 rounded-xl font-bold fade-in">Lanjut ke Playlist ➔</button>
+</div>
+</section>
+
+<!-- HALAMAN PLAYLIST -->
+<section id="halaman-playlist" class="section hidden">
+<h2 class="font-serif text-3xl mb-6 gradient-text fade-in">Playlist Spesial Untukmu 🎵</h2>
+<div class="playlist-wrapper max-w-md w-full fade-in">
+<iframe style="border-radius:0px" 
+src="https://open.spotify.com/embed/playlist/1G7XUf6kSNNCydxNKF4c6X" 
+width="100%" height="380" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy">
+</iframe>
+</div>
+</section>
+
+<script>
+// SPARKLES
+function createSparkles(){
+const sparkles=document.getElementById('sparkles');
+for(let i=0;i<30;i++){
+let s=document.createElement('div');
+s.className='sparkle';
+s.style.left=Math.random()*100+'%';
+s.style.top=Math.random()*100+'%';
+s.style.animationDuration=(2+Math.random()*3)+'s';
+sparkles.appendChild(s);
+}}
+createSparkles();
+
+// SANDI
+function cekSandi(){
+const input=document.getElementById('inputSandi').value;
+const error=document.getElementById('errorMsg');
+const card=document.querySelector('#halaman-sandi .glass');
+if(input==="260379"){
+document.getElementById('halaman-sandi').style.display='none';
+document.getElementById('halaman-kue').classList.remove('hidden');
+}else if(input!==""){
+error.classList.replace('opacity-0','opacity-100');
+card.style.animation='shake 0.4s ease-in-out';
+setTimeout(()=>card.style.animation='',400);
+}else{
+error.classList.replace('opacity-100','opacity-0');
+}
+}
+
+// KUE + CONFETTI
+function tiupLilin(){
+document.getElementById('api').style.display='none';
+const duration=3*1000;
+const animationEnd=Date.now()+duration;
+const defaults={startVelocity:30,spread:360,ticks:60,zIndex:0};
+function randomInRange(min,max){return Math.random()*(max-min)+min}
+const interval=setInterval(function(){
+const timeLeft=animationEnd-Date.now();
+if(timeLeft<=0) return clearInterval(interval);
+const particleCount=50*(timeLeft/duration);
+confetti(Object.assign({},defaults,{particleCount,origin:{x:randomInRange(0.1,0.3),y:Math.random()-0.2}}));
+confetti(Object.assign({},defaults,{particleCount,origin:{x:randomInRange(0.7,0.9),y:Math.random()-0.2}}));
+},250);
+setTimeout(()=>{
+document.getElementById('halaman-kue').style.display='none';
+document.getElementById('halaman-ucapan').classList.remove('hidden');
+window.scrollTo({top:0,behavior:'smooth'});
+},2000);
+}
+
+// LANJUT PLAYLIST
+function nextPlaylist(){
+document.getElementById('halaman-ucapan').style.display='none';
+document.getElementById('halaman-playlist').classList.remove('hidden');
+window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+
+</body>
+</html>
